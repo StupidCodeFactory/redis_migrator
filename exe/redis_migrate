@@ -7,7 +7,7 @@ require 'byebug'
 
 options = OptionParser.new
 
-RedisMigrator.configure do |config|
+RedisMigrate.configure do |config|
   options.on('-c', '--concurrency [=WORKER_COUNT]', 'Number of workers', Integer) do |worker_count|
     config.worker_count = worker_count
   end
@@ -23,4 +23,4 @@ end
 
 options.parse!
 
-RedisMigrator::Command.start
+RedisMigrate::Command.start

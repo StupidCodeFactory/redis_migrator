@@ -2,7 +2,7 @@
 
 require 'redis_migrator/command'
 
-RSpec.describe RedisMigrator::Command do
+RSpec.describe RedisMigrate::Command do
   describe '.start' do
     let(:key_1) { 'key_1' }
     let(:key_2) { 'key_2' }
@@ -10,17 +10,17 @@ RSpec.describe RedisMigrator::Command do
     let(:target) { instance_spy(Redis) }
 
     describe 'actual processing' do
-      before { 1.upto(1000) { |i| RedisMigrator.source.set i, i } }
+      before { 1.upto(1000) { |i| RedisMigrate.source.set i, i } }
 
       after do
-        RedisMigrator.source.flushall
-        RedisMigrator.target.flushall
+        RedisMigrate.source.flushall
+        RedisMigrate.target.flushall
       end
 
       it 'migrates all the keys from source to target' do
         expect { described_class.start }.to change {
-          RedisMigrator.target.keys.sort
-        }.from([]).to(RedisMigrator.source.keys.sort)
+          RedisMigrate.target.keys.sort
+        }.from([]).to(RedisMigrate.source.keys.sort)
       end
     end
 
@@ -36,7 +36,7 @@ RSpec.describe RedisMigrator::Command do
       end
 
       before do
-        RedisMigrator.configure do |config|
+        RedisMigrate.configure do |config|
           config.worker_count = worker_count
           config.source = source
           config.target = target

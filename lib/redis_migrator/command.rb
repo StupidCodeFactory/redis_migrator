@@ -3,7 +3,7 @@
 require 'concurrent/executor/fixed_thread_pool'
 require 'redis_migrator'
 
-module RedisMigrator
+module RedisMigrate
   # command line processing
   # ripped off from https://dev.to/afilmycode/how-we-migrated-aws-elasticache-redis-cluster-to-another-in-production-297f
   class Command
@@ -31,11 +31,11 @@ module RedisMigrator
     attr_accessor :is_first
 
     def source
-      RedisMigrator.source
+      RedisMigrate.source
     end
 
     def target
-      RedisMigrator.target
+      RedisMigrate.target
     end
 
     def ttl_for(key)
@@ -49,7 +49,7 @@ module RedisMigrator
     end
 
     def pool
-      @pool ||= Concurrent::FixedThreadPool.new(RedisMigrator.worker_count)
+      @pool ||= Concurrent::FixedThreadPool.new(RedisMigrate.worker_count)
     end
   end
 end

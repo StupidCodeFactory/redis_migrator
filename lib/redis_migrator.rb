@@ -5,7 +5,7 @@ require 'redis'
 require 'forwardable'
 
 # migrate date from one redis instance to another
-module RedisMigrator
+module RedisMigrate
   class Error < StandardError; end
 
   # configure source and target

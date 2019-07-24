@@ -6,7 +6,7 @@ require 'redis_migrator/version'
 
 Gem::Specification.new do |spec|
   spec.name          = 'redis_migrator'
-  spec.version       = RedisMigrator::VERSION
+  spec.version       = RedisMigrate::VERSION
   spec.authors       = ['StupidCodeFactory']
   spec.email         = ['yann.marquet@babylonhealth.com']
 

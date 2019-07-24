@@ -49,7 +49,6 @@ jobs:
       - run:
           name: release gems
           command: |
-            printenv
             gem bump --tag --release
 
 workflows:

@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-RSpec.describe RedisMigrator do
+RSpec.describe RedisMigrate do
   it 'has a version number' do
-    expect(RedisMigrator::VERSION).not_to be nil
+    expect(RedisMigrate::VERSION).not_to be nil
   end
 
   describe described_class::Configuration do
@@ -32,7 +32,7 @@ RSpec.describe RedisMigrator do
 
     it 'yields a config block' do
       expect { |config| described_class.configure(&config) }
-        .to yield_with_args(RedisMigrator::Configuration)
+        .to yield_with_args(RedisMigrate::Configuration)
     end
   end
 end
