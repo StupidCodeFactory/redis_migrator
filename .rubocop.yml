@@ -12,3 +12,7 @@ require: rubocop-rspec
 
 RSpec/NamedSubject:
   Enabled: false
+
+Metrics/BlockLength:
+  Exclude:
+    - 'spec/**/*_spec.rb'

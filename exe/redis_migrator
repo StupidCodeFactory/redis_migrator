@@ -1,17 +1,26 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
-require 'redis_migrator'
+require 'redis_migrator/command'
 require 'optparse'
+require 'byebug'
+
+options = OptionParser.new
 
 RedisMigrator.configure do |config|
+  options.on('-c', '--concurrency [=WORKER_COUNT]', 'Number of workers', Integer) do |worker_count|
+    config.worker_count = worker_count
+  end
 
-  OptionParser.new do |parser|
-    parser.on('-c', '--concurrency[=WORKER_COUNT]', 'Number of workers', Integer) do |worker_count|
-      config.worker_count = worker_count
-    end
-    parser.on('-s', '--source[=REDIS_SOURCE_URL]', 'Redis source connection string: redis://my-redis-host.example.com:6379, the redis instance data will be copied from.')
-    parser.on('-t', '--target[=REDIS_TARGET_URL]', 'Redis connection string: redis://my-redis-host.example.com:6379, the redis instance data will be copied to.')
-  end.parse!
+  options.on('-s', '--source [=REDIS_SOURCE_URL]', 'Redis source connection string: redis://my-redis-host.example.com:6379, the redis instance data will be copied from.') do |source|
+    config.source = Redis.new(url: source)
+  end
 
+  options.on('-t', '--target [=REDIS_TARGET_URL]', 'Redis connection string: redis://my-redis-host.example.com:6379, the redis instance data will be copied to.') do |target|
+    config.target = Redis.new(url: target)
+  end
 end
+
+options.parse!
+
+RedisMigrator::Command.start

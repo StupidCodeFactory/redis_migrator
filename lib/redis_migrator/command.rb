@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'concurrent/executor/fixed_thread_pool'
+require 'redis_migrator'
 
 module RedisMigrator
   # command line processing
@@ -15,7 +16,7 @@ module RedisMigrator
       is_first = true
 
       while current.to_i != 0 || is_first
-        is_first = false
+        is_first      = false
         current, keys = source.scan(current.to_i, count: 100)
 
         keys.each { |key| pool.post { dump_and_restore(key) } }
@@ -50,6 +51,5 @@ module RedisMigrator
     def pool
       @pool ||= Concurrent::FixedThreadPool.new(RedisMigrator.worker_count)
     end
-
   end
 end
