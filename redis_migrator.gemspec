@@ -38,10 +38,13 @@ Gem::Specification.new do |spec|
   spec.require_paths = ['lib']
 
   spec.add_dependency 'redis'
+  spec.add_dependency 'concurrent-ruby'
 
   spec.add_development_dependency 'bundler', '~> 2.0'
   spec.add_development_dependency 'rake', '~> 10.0'
   spec.add_development_dependency 'rspec', '~> 3.0'
   spec.add_development_dependency 'rubocop'
   spec.add_development_dependency 'rubocop-rspec'
+  spec.add_development_dependency 'dotenv'
+  spec.add_development_dependency 'byebug'
 end

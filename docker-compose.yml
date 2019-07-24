@@ -1,0 +1,21 @@
+version: "3.7"
+services:
+  source:
+    image: redis:alpine
+    ports:
+      - "6379"
+  target:
+    image: redis:alpine
+    ports:
+      - "6379"
+  gem:
+    build:
+      context: ./
+    volumes:
+      - ./:/app
+    environment:
+      REDIS_MIGRATOR_SOURCE_URL: "${REDIS_MIGRATOR_SOURCE_URL}"
+      REDIS_MIGRATOR_TARGET_URL: "${REDIS_MIGRATOR_TARGET_URL}"
+    depends_on:
+      - source
+      - target

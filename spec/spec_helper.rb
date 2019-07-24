@@ -2,6 +2,8 @@
 
 require 'bundler/setup'
 require 'redis_migrator'
+require 'byebug'
+require 'dotenv'
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
