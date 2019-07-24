@@ -1,0 +1,66 @@
+version: 2
+jobs:
+  build:
+    machine:
+      image: circleci/classic:latest
+    working_directory: ~/redis_migrator
+    steps:
+      - checkout
+      - run:
+          name: Install Docker Compose
+          command: |
+            curl -L https://github.com/docker/compose/releases/download/1.24.1/docker-compose-`uname -s`-`uname -m` > ~/docker-compose
+            chmod +x ~/docker-compose
+            sudo mv ~/docker-compose /usr/local/bin/docker-compose
+
+      - run: docker-compose build
+
+      - run: docker-compose up -d source target
+
+      - run:
+          name: run tests
+          environment:
+            REDIS_MIGRATOR_SOURCE_URL: redis://source:6379/0
+            REDIS_MIGRATOR_TARGET_URL: redis://target:6379/0
+          command: docker-compose run gem bundle exec rspec
+
+      - store_test_results:
+          path: /tmp/test-results
+      - store_artifacts:
+          path: /tmp/test-results
+          destination: test-results
+
+  release:
+    docker:
+      - image: circleci/ruby:2.6.3
+    working_directory: ~/redis_migrator
+
+    steps:
+      - checkout
+      - run: gem install gem-release
+      - run: |
+          git config --global user.email "ymarquet@gmail.com"
+          git config --global user.name "Yann Marquet"
+      - run: |
+          mkdir -p ~/.gem
+          touch ~/.gem/credentials
+          chmod 0600 ~/.gem/credentials
+          printf -- "---\n:rubygems_api_key: $GEM_HOST_API_KEY\n" > ~/.gem/credentials
+      - run:
+          name: release gems
+          command: |
+            printenv
+            gem bump --tag --release
+
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - build
+      - release:
+          requires:
+            - build
+          filters:
+            branches:
+              only:
+                - master

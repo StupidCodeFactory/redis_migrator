@@ -13,6 +13,12 @@ require: rubocop-rspec
 RSpec/NamedSubject:
   Enabled: false
 
+RSpec/NestedGroup:
+  Max: 4
+
+RSpec/MultipleExpectations:
+  Max: 2
+
 Metrics/BlockLength:
   Exclude:
     - 'spec/**/*_spec.rb'
